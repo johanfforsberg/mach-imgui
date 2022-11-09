@@ -427,6 +427,10 @@ ZGUI_API void zguiEndListBox(void) {
     ImGui::EndListBox();
 }
 
+ZGUI_API ImGuiID zguiDockSpaceOverViewport(ImGuiDockNodeFlags flags) {
+    return ImGui::DockSpaceOverViewport(NULL, flags);
+}
+
 ZGUI_API bool zguiSelectable(const char* label, bool selected, ImGuiSelectableFlags flags, float w, float h) {
     return ImGui::Selectable(label, selected, flags, { w, h });
 }
@@ -1133,6 +1137,10 @@ ZGUI_API void zguiIoSetIniFilename(const char* filename) {
 
 ZGUI_API void zguiIoSetDisplaySize(float width, float height) {
     ImGui::GetIO().DisplaySize = { width, height };
+}
+
+ZGUI_API void zguiIoSetDockingEnable() {
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
 ZGUI_API void zguiIoSetDisplayFramebufferScale(float sx, float sy) {
