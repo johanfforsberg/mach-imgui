@@ -58,6 +58,9 @@ pub const io = struct {
     /// `pub fn setDisplayFramebufferScale(sx: f32, sy: f32) void`
     pub const setDisplayFramebufferScale = zguiIoSetDisplayFramebufferScale;
     extern fn zguiIoSetDisplayFramebufferScale(sx: f32, sy: f32) void;
+
+    pub const setDockingEnable = zguiIoSetDockingEnable;
+    extern fn zguiIoSetDockingEnable() void;
 };
 //--------------------------------------------------------------------------------------------------
 const Context = *opaque {};
@@ -2233,6 +2236,27 @@ pub fn beginListBox(label: [:0]const u8, args: BeginListBox) bool {
 pub const endListBox = zguiEndListBox;
 extern fn zguiBeginListBox(label: [*:0]const u8, w: f32, h: f32) bool;
 extern fn zguiEndListBox() void;
+
+pub const DockNodeFlags = packed struct(u32) {
+    keep_alive_only: bool = false,
+    _pad0: u1 = 0,
+    no_docking_in_central_node: bool = false,
+    passthru_central_node: bool = false,
+    no_split: bool = false,
+    no_resize: bool = false,
+    auto_hide_tab_bar: bool = false,
+    _pad1: u25 = 0,
+
+    comptime {
+        assert(@sizeOf(@This()) == @sizeOf(u32) and @bitSizeOf(@This()) == @bitSizeOf(u32));
+    }
+};
+
+pub fn dockSpaceOverViewport(flags: DockNodeFlags) u32 {
+    return zguiDockSpaceOverViewport(flags);
+}
+extern fn zguiDockSpaceOverViewport(flags: DockNodeFlags) u32;
+
 //--------------------------------------------------------------------------------------------------
 //
 // Item/Widgets Utilities and Query Functions
